@@ -41,8 +41,18 @@ function App() {
           <div className="container">
             <Switch>
               <Route path="/" exact component={Home} />
-              <AuthRoute path="/login" exact component={Login} />
-              <AuthRoute path="/signup" exact component={Signup} />
+              <AuthRoute
+                path="/login"
+                exact
+                component={Login}
+                authenticated={authenticated}
+              />
+              <AuthRoute
+                path="/signup"
+                exact
+                component={Signup}
+                authenticated={authenticated}
+              />
             </Switch>
           </div>
         </Router>
