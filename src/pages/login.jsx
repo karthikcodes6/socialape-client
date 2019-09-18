@@ -10,31 +10,9 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button/Button";
 import Link from "react-router-dom/Link";
 import { CircularProgress } from "@material-ui/core";
-const styles = {
-  form: {
-    textAlign: "center"
-  },
-  image: {
-    margin: "20px auto 20px auto"
-  },
-  pageTitle: {
-    margin: "10px auto 20px auto"
-  },
-  textField: {
-    margin: "10px auto 20px auto"
-  },
-  button: {
-    position: "relative"
-  },
-  customError: {
-    color: "red",
-    fontSize: "0.8rem",
-    margin: "10px auto"
-  },
-  progress: {
-    position: "absolute"
-  }
-};
+const styles = theme => ({
+  ...theme.globalCSS
+});
 
 class Login extends Component {
   constructor() {
@@ -58,6 +36,7 @@ class Login extends Component {
       .post("/login", userData)
       .then(res => {
         console.log(res.data);
+        localStorage.setItem("FBIdToken", `Bearer ${res.data.token}`);
         this.setState({ loading: false });
         this.props.history.push("/");
       })
@@ -77,7 +56,7 @@ class Login extends Component {
         <Grid item sm />
         <Grid item sm>
           <img src={AppIcon} alt="monkey-icon" className={classes.image}></img>
-          <Typography variant="h1" className={classes.pageTitle}>
+          <Typography variant="h2" className={classes.pageTitle}>
             Login
           </Typography>
           <form noValidate onSubmit={this.handleSubmit}>
