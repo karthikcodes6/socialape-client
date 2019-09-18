@@ -2,9 +2,11 @@ import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider";
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
+import jwtDecode from "jwt-decode";
 
 //Component
 import Navbar from "./components/Navbar";
+import AuthRoute from "./util/AuthRoute";
 
 //Pages
 import Home from "./pages/home";
@@ -13,26 +15,22 @@ import Signup from "./pages/signup";
 
 //CSS
 import "./App.css";
+import GLOBAL_THEME from "./util/theme";
 
-const theme = createMuiTheme({
-  palette: {
-    primary: {
-      light: "#33c9dc",
-      main: "#00bcd4",
-      dark: "#008394",
-      contrastText: "#fff"
-    },
-    secondary: {
-      light: "#ff6333",
-      main: "#ff3d00",
-      dark: "#b22a00",
-      contrastText: "#fff"
-    },
-    typography: {
-      useNextVariants: true
-    }
+const theme = createMuiTheme(GLOBAL_THEME);
+
+const token = localStorage.FBIdToken;
+let authenticated;
+if (token) {
+  const decodedToken = jwtDecode(token);
+
+  if (decodedToken.exp * 1000 < Date.now()) {
+    window.location.href = "/login";
+    authenticated = false;
+  } else {
+    authenticated = true;
   }
-});
+}
 
 function App() {
   return (
@@ -43,8 +41,8 @@ function App() {
           <div className="container">
             <Switch>
               <Route path="/" exact component={Home} />
-              <Route path="/login" exact component={Login} />
-              <Route path="/signup" exact component={Signup} />
+              <AuthRoute path="/login" exact component={Login} />
+              <AuthRoute path="/signup" exact component={Signup} />
             </Switch>
           </div>
         </Router>
