@@ -9,7 +9,7 @@ import axios from "axios";
 import { Provider } from "react-redux";
 import store from "./redux/store";
 import { SET_AUTHENTICATED } from "./redux/types";
-import { logOutUser, getUserData } from "./redux/actions/userActions";
+import { logoutUser, getUserData } from "./redux/actions/userActions";
 
 //Component
 import Navbar from "./components/Navbar";
@@ -29,7 +29,7 @@ const theme = createMuiTheme(GLOBAL_THEME);
 const token = localStorage.FBIdToken;
 if (token) {
   const decodedToken = jwtDecode(token);
-  store.dispatch(logOutUser());
+  store.dispatch(logoutUser());
   if (decodedToken.exp * 1000 < Date.now()) {
     window.location.href = "/login";
   } else {
